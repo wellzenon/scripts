@@ -1,0 +1,20 @@
+#!/bin/sh
+
+while getopts s:t:f: flag; do
+	case "${flag}" in
+	s | --select) select=${OPTARG} ;;
+	t | --target) target=${OPTARG} ;;
+	f | --filename) filename=${OPTARG} ;;
+	esac
+done
+
+opt=""
+
+if [ "$select" == yes ]; then
+	opt="-s"
+fi
+
+mkdir -p ${target}
+[ -d ${target} ] || exit 1
+
+scrot ${opt} ${target}/${filename} -e 'xclip -selection clipboard -target image/png -i $f'
